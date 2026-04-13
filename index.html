@@ -4,91 +4,92 @@
 <title>Special Touch Store</title>
 
 <style>
-body {font-family:sans-serif; background:#f6f6f6; margin:0;}
+body {font-family:sans-serif; background:#f2f2f2; margin:0;}
 
 .header {
-  padding:15px;
-  font-size:22px;
+  padding:20px;
+  font-size:24px;
   font-weight:bold;
   text-align:center;
+  background:#111;
+  color:white;
 }
 
 .header small {
   font-size:14px;
-  font-weight:normal;
+  color:#ccc;
 }
 
 .cod {
-  background:#fff3cd;
+  background:#ffe082;
   padding:10px;
   text-align:center;
   font-weight:bold;
-  color:#856404;
 }
 
 .grid {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:10px;
+  gap:12px;
+  padding:12px;
 }
 
 .card {
   background:white;
-  border-radius:12px;
+  border-radius:15px;
   padding:10px;
   text-align:center;
-  transition:0.2s;
-}
-
-.card:hover {
-  transform: scale(1.03);
+  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .card img {
   width:100%;
-  border-radius:10px;
+  height:180px;
+  object-fit:cover;
+  border-radius:12px;
 }
 
-.price {color:#e65100; font-weight:bold;}
+.price {color:#ff5722; font-weight:bold; font-size:18px;}
 
 button {
-  background:black;
-  color:white;
   border:none;
   padding:10px;
   width:100%;
-  border-radius:8px;
-  margin-top:5px;
+  border-radius:10px;
+  margin-top:6px;
+  font-size:14px;
   cursor:pointer;
 }
 
-.whatsapp {
-  background:#25D366;
-}
+.cart-btn {background:black; color:white;}
+.whatsapp {background:#25D366; color:white;}
+.buy {background:#ff5722; color:white;}
 
-.order-btn {
-  background:#ff5722;
-  font-size:16px;
+.badge {
+  color:red;
+  font-size:12px;
 }
 
 .cart {
   background:white;
-  padding:15px;
   margin:10px;
+  padding:15px;
+  border-radius:15px;
+}
+
+ul {padding-left:18px;}
+
+.sticky-btn {
+  position:fixed;
+  bottom:10px;
+  left:10px;
+  right:10px;
+  background:#25D366;
+  color:white;
+  padding:15px;
   border-radius:12px;
-}
-
-input, textarea {
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border-radius:5px;
-  border:1px solid #ccc;
-}
-
-ul {
-  padding-left:15px;
+  text-align:center;
+  font-size:16px;
 }
 </style>
 
@@ -98,95 +99,62 @@ ul {
 
 <div class="header">
 🛍️ Special Touch Store <br>
-<small>Premium Bags & Wallets</small>
+<small>Premium Bags for Stylish Women</small>
 </div>
 
-<div class="cod">🚚 Cash on Delivery Available | Limited Stock 🔥</div>
+<div class="cod">🚚 Cash on Delivery | Free Shipping | Limited Stock 🔥</div>
 
 <div class="grid">
 
-<!-- PRODUCT 1 -->
 <div class="card">
-<img src="https://via.placeholder.com/300">
+<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
 <h3>Designer Ladies Wallet</h3>
 <p class="price">₹499</p>
-<p style="color:red; font-size:12px;">🔥 Only 5 left in stock</p>
-<p style="font-size:12px;">⭐ 4.8/5 (120 reviews)</p>
-<button onclick="addToCart('Designer Ladies Wallet',499)">Add to Cart</button>
-<button class="whatsapp" onclick="orderWhatsApp('Designer Ladies Wallet',499)">Order on WhatsApp</button>
-<button onclick="orderWhatsApp('Designer Ladies Wallet',499)">⚡ Buy Now</button>
+<p class="badge">🔥 Only 5 left</p>
+<button class="cart-btn" onclick="addToCart('Designer Ladies Wallet',499)">Add to Cart</button>
+<button class="whatsapp" onclick="orderSingle('Designer Ladies Wallet',499)">WhatsApp</button>
+<button class="buy" onclick="orderSingle('Designer Ladies Wallet',499)">⚡ Buy Now</button>
 </div>
 
-<!-- PRODUCT 2 -->
 <div class="card">
-<img src="https://via.placeholder.com/300">
+<img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519">
 <h3>Stylish Clutch Wallet</h3>
 <p class="price">₹599</p>
-<p style="color:red; font-size:12px;">🔥 Only 7 left in stock</p>
-<p style="font-size:12px;">⭐ 4.7/5 (95 reviews)</p>
-<button onclick="addToCart('Stylish Clutch Wallet',599)">Add to Cart</button>
-<button class="whatsapp" onclick="orderWhatsApp('Stylish Clutch Wallet',599)">Order on WhatsApp</button>
-<button onclick="orderWhatsApp('Stylish Clutch Wallet',599)">⚡ Buy Now</button>
+<p class="badge">🔥 Only 7 left</p>
+<button class="cart-btn" onclick="addToCart('Stylish Clutch Wallet',599)">Add to Cart</button>
+<button class="whatsapp" onclick="orderSingle('Stylish Clutch Wallet',599)">WhatsApp</button>
+<button class="buy" onclick="orderSingle('Stylish Clutch Wallet',599)">⚡ Buy Now</button>
 </div>
 
-<!-- PRODUCT 3 -->
 <div class="card">
-<img src="https://via.placeholder.com/300">
+<img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7">
 <h3>Premium Hand Bag</h3>
 <p class="price">₹899</p>
-<p style="color:red; font-size:12px;">🔥 Only 3 left in stock</p>
-<p style="font-size:12px;">⭐ 4.9/5 (150 reviews)</p>
-<button onclick="addToCart('Premium Hand Bag',899)">Add to Cart</button>
-<button class="whatsapp" onclick="orderWhatsApp('Premium Hand Bag',899)">Order on WhatsApp</button>
-<button onclick="orderWhatsApp('Premium Hand Bag',899)">⚡ Buy Now</button>
+<p class="badge">🔥 Only 3 left</p>
+<button class="cart-btn" onclick="addToCart('Premium Hand Bag',899)">Add to Cart</button>
+<button class="whatsapp" onclick="orderSingle('Premium Hand Bag',899)">WhatsApp</button>
+<button class="buy" onclick="orderSingle('Premium Hand Bag',899)">⚡ Buy Now</button>
 </div>
 
-<!-- PRODUCT 4 -->
 <div class="card">
-<img src="https://via.placeholder.com/300">
+<img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03">
 <h3>Embroidered Stylish Bag</h3>
 <p class="price">₹999</p>
-<p style="color:red; font-size:12px;">🔥 Only 4 left in stock</p>
-<p style="font-size:12px;">⭐ 4.8/5 (110 reviews)</p>
-<button onclick="addToCart('Embroidered Stylish Bag',999)">Add to Cart</button>
-<button class="whatsapp" onclick="orderWhatsApp('Embroidered Stylish Bag',999)">Order on WhatsApp</button>
-<button onclick="orderWhatsApp('Embroidered Stylish Bag',999)">⚡ Buy Now</button>
+<p class="badge">🔥 Only 4 left</p>
+<button class="cart-btn" onclick="addToCart('Embroidered Stylish Bag',999)">Add to Cart</button>
+<button class="whatsapp" onclick="orderSingle('Embroidered Stylish Bag',999)">WhatsApp</button>
+<button class="buy" onclick="orderSingle('Embroidered Stylish Bag',999)">⚡ Buy Now</button>
 </div>
 
-</div>
-
-<!-- TRUST SECTION -->
-<div style="padding:10px; font-size:14px;">
-✔ 100% Quality Checked <br>
-✔ Cash on Delivery Available <br>
-✔ Easy Returns <br>
-✔ Fast Shipping 🚚
 </div>
 
 <div class="cart">
-
 <h2>Total: ₹<span id="total">0</span></h2>
-
 <ul id="cartItems"></ul>
+</div>
 
-<form action="https://formspree.io/f/xgvyyqkz" method="POST">
-
-<input type="hidden" name="order_details" id="orderDetails">
-<input type="hidden" name="total" id="totalInput">
-
-<label>Your Name</label>
-<input type="text" name="name" required>
-
-<label>Phone Number</label>
-<input type="text" name="phone" required>
-
-<label>Address</label>
-<textarea name="address" required></textarea>
-
-<button class="order-btn" type="submit" onclick="prepareOrder()">📩 Send Order</button>
-
-</form>
-
+<div class="sticky-btn" onclick="sendFullOrder()">
+📲 Order Now on WhatsApp
 </div>
 
 <script>
@@ -196,7 +164,6 @@ let orders = [];
 function addToCart(name, price){
   total += price;
   orders.push(name + " - ₹" + price);
-
   document.getElementById("total").innerText = total;
 
   let li = document.createElement("li");
@@ -204,21 +171,22 @@ function addToCart(name, price){
   document.getElementById("cartItems").appendChild(li);
 }
 
-function prepareOrder(){
-  document.getElementById("totalInput").value = total;
-  document.getElementById("orderDetails").value =
-    "Items:\n" + orders.join("\n") + "\n\nTotal: ₹" + total;
+function orderSingle(name, price){
+  let phone = "917838657382";
+  let msg = `Hello, I want to order:\n${name} - ₹${price}`;
+  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg));
 }
 
-function orderWhatsApp(name, price){
+function sendFullOrder(){
+  if(orders.length === 0){
+    alert("Cart is empty!");
+    return;
+  }
+
   let phone = "917838657382";
-  let msg = `Hello,
-I want to order:
-
-Product: ${name}
-Price: ₹${price}
-
-Please confirm availability.`;
+  let msg = "Hello, I want to order:\n\n" +
+            orders.join("\n") +
+            "\n\nTotal: ₹" + total;
 
   window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg));
 }
