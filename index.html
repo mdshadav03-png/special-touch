@@ -4,13 +4,13 @@
 <title>Special Touch Store</title>
 
 <style>
-body {font-family:sans-serif; margin:0; background:#f5f5f5;}
+body {font-family:sans-serif; background:#f2f2f2; margin:0;}
 
 .header {
-  background:black;
-  color:white;
+  padding:20px;
   text-align:center;
-  padding:15px;
+  background:#111;
+  color:white;
 }
 
 .top {
@@ -23,51 +23,59 @@ body {font-family:sans-serif; margin:0; background:#f5f5f5;}
 .grid {
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:10px;
-  padding:10px;
+  gap:12px;
+  padding:12px;
 }
 
 .card {
   background:white;
+  border-radius:15px;
   padding:10px;
-  border-radius:12px;
   text-align:center;
 }
 
 .card img {
   width:100%;
-  height:150px;
+  height:180px;
   object-fit:cover;
-  border-radius:10px;
+  border-radius:12px;
 }
+
+.price {color:#ff5722; font-weight:bold;}
 
 .qty {
   display:flex;
   justify-content:center;
+  align-items:center;
+  gap:10px;
   margin-top:5px;
 }
 
 .qty button {
-  padding:5px 10px;
-  font-size:16px;
+  width:30px;
+  height:30px;
+  font-size:18px;
+  background:black;
+  color:white;
+  border-radius:50%;
 }
 
 .cart {
   background:white;
   margin:10px;
-  padding:10px;
+  padding:15px;
   border-radius:12px;
 }
 
-input, select {
+input, textarea {
   width:100%;
   padding:10px;
   margin:5px 0;
 }
 
 button {
-  padding:10px;
   width:100%;
+  padding:10px;
   margin-top:5px;
   border:none;
   border-radius:8px;
@@ -75,22 +83,19 @@ button {
   color:white;
 }
 
-.history {
-  background:white;
-  margin:10px;
-  padding:10px;
-  border-radius:12px;
-}
+.whatsapp {background:#25D366;}
 </style>
 
 </head>
 
 <body>
 
-<div class="header">🛍️ Special Touch Store</div>
+<div class="header">
+🛍️ Special Touch Store
+</div>
 
 <div class="top">
-✔️ Free Delivery | ✔️ COD Available | ✔️ 7 Days Return
+✔️ Free Delivery | ✔️ Cash on Delivery | ✔️ 7 Days Return
 </div>
 
 <div class="grid">
@@ -106,7 +111,6 @@ button {
 <button onclick="changeQty('Wallet',499,1)">+</button>
 </div>
 
-<button onclick="buyNow('Wallet',499)">⚡ Buy Now</button>
 </div>
 
 <div class="card">
@@ -119,7 +123,6 @@ button {
 <button onclick="changeQty('Clutch',599,1)">+</button>
 </div>
 
-<button onclick="buyNow('Clutch',599)">⚡ Buy Now</button>
 </div>
 
 </div>
@@ -130,22 +133,11 @@ button {
 
 <input id="name" placeholder="Name">
 <input id="phone" placeholder="Phone">
-<input id="address" placeholder="Address">
-
-<select id="payment">
-<option>Cash on Delivery</option>
-<option>UPI Payment</option>
-<option>Scan QR</option>
-</select>
+<textarea id="address" placeholder="Address"></textarea>
 
 <button onclick="placeOrder()">🛒 Order Now</button>
-<button onclick="orderWhatsApp()">📲 Order on WhatsApp</button>
+<button class="whatsapp" onclick="orderWhatsApp()">📲 Order on WhatsApp</button>
 
-</div>
-
-<div class="history">
-<h3>Order History</h3>
-<ul id="history"></ul>
 </div>
 
 <script>
@@ -171,43 +163,52 @@ function calculateTotal(){
   document.getElementById("total").innerText = total;
 }
 
-function buyNow(name, price){
-  cart = {};
-  cart[name] = 1;
-  calculateTotal();
-  alert("Product added. Click Order Now");
-}
-
-function generateOrderID(){
-  return "ORD" + Math.floor(Math.random()*100000);
-}
-
 function placeOrder(){
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
   let address = document.getElementById("address").value;
-  let payment = document.getElementById("payment").value;
 
   if(!name || !phone || !address){
-    alert("Fill details");
+    alert("Fill all details");
     return;
   }
 
-  let orderID = generateOrderID();
-
-  let details = `ID: ${orderID} | ${name} | ₹${total}`;
-
-  let li = document.createElement("li");
-  li.innerText = details;
-  document.getElementById("history").appendChild(li);
-
-  alert("Order Placed! ID: " + orderID);
-
-  // PAYMENT ACTION
-  if(payment=="UPI Payment"){
-    window.location.href="upi://pay?pa=8745974437-3@ybl&am="+total;
+  let items = "";
+  for(let item in cart){
+    if(cart[item] > 0){
+      items += item + " x" + cart[item] + "\n";
+    }
   }
 
+  let msg = `Order Details:
+
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+
+Items:
+${items}
+
+Total: ₹${total}`;
+
+  // WHATSAPP
+  window.open("https://wa.me/917838657382?text="+encodeURIComponent(msg));
+
+  // EMAIL FIX (IMPORTANT)
+  let form = document.createElement("form");
+  form.action = "https://formsubmit.co/mdshadav03@gmail.com";
+  form.method = "POST";
+
+  let input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "message";
+  input.value = msg;
+
+  form.appendChild(input);
+  document.body.appendChild(form);
+  form.submit();
+
+  alert("Order Sent Successfully!");
 }
 
 function orderWhatsApp(){
