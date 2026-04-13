@@ -1,73 +1,227 @@
 <!DOCTYPE html>
-    header { background: #0c831f; color: white; padding: 10px; }
-    .search { width: 100%; padding: 8px; border-radius: 6px; border: none; }
-    .container { padding: 10px; }
-    .products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-    .card { background: white; padding: 10px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .card img { width: 100%; border-radius: 10px; }
-    .btn { background: #0c831f; color: white; padding: 6px; border: none; border-radius: 6px; width: 100%; }
-    .cart { position: fixed; bottom: 0; width: 100%; background: white; padding: 10px; box-shadow: 0 -2px 5px rgba(0,0,0,0.1); }
-  </style>
+<html>
+<head>
+<title>Special Touch Store</title>
+
+<style>
+body {font-family:sans-serif; background:#f6f6f6; margin:0;}
+
+.header {
+  padding:15px;
+  font-size:22px;
+  font-weight:bold;
+  text-align:center;
+}
+
+.header small {
+  font-size:14px;
+  font-weight:normal;
+}
+
+.cod {
+  background:#fff3cd;
+  padding:10px;
+  text-align:center;
+  font-weight:bold;
+  color:#856404;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:10px;
+}
+
+.card {
+  background:white;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+  transition:0.2s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card img {
+  width:100%;
+  border-radius:10px;
+}
+
+.price {color:#e65100; font-weight:bold;}
+
+button {
+  background:black;
+  color:white;
+  border:none;
+  padding:10px;
+  width:100%;
+  border-radius:8px;
+  margin-top:5px;
+  cursor:pointer;
+}
+
+.whatsapp {
+  background:#25D366;
+}
+
+.order-btn {
+  background:#ff5722;
+  font-size:16px;
+}
+
+.cart {
+  background:white;
+  padding:15px;
+  margin:10px;
+  border-radius:12px;
+}
+
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border-radius:5px;
+  border:1px solid #ccc;
+}
+
+ul {
+  padding-left:15px;
+}
+</style>
+
 </head>
+
 <body>
 
-<header>
-  <h2>QuickShop</h2>
-  <input type="text" id="search" class="search" placeholder="Search products..." />
-</header>
-
-<div class="container">
-  <div class="products" id="productList"></div>
+<div class="header">
+🛍️ Special Touch Store <br>
+<small>Premium Bags & Wallets</small>
 </div>
 
-<div class="cart" id="cartBox">
-  Cart: <span id="cartCount">0</span> items | ₹<span id="total">0</span>
+<div class="cod">🚚 Cash on Delivery Available | Limited Stock 🔥</div>
+
+<div class="grid">
+
+<!-- PRODUCT 1 -->
+<div class="card">
+<img src="https://via.placeholder.com/300">
+<h3>Designer Ladies Wallet</h3>
+<p class="price">₹499</p>
+<p style="color:red; font-size:12px;">🔥 Only 5 left in stock</p>
+<p style="font-size:12px;">⭐ 4.8/5 (120 reviews)</p>
+<button onclick="addToCart('Designer Ladies Wallet',499)">Add to Cart</button>
+<button class="whatsapp" onclick="orderWhatsApp('Designer Ladies Wallet',499)">Order on WhatsApp</button>
+<button onclick="orderWhatsApp('Designer Ladies Wallet',499)">⚡ Buy Now</button>
+</div>
+
+<!-- PRODUCT 2 -->
+<div class="card">
+<img src="https://via.placeholder.com/300">
+<h3>Stylish Clutch Wallet</h3>
+<p class="price">₹599</p>
+<p style="color:red; font-size:12px;">🔥 Only 7 left in stock</p>
+<p style="font-size:12px;">⭐ 4.7/5 (95 reviews)</p>
+<button onclick="addToCart('Stylish Clutch Wallet',599)">Add to Cart</button>
+<button class="whatsapp" onclick="orderWhatsApp('Stylish Clutch Wallet',599)">Order on WhatsApp</button>
+<button onclick="orderWhatsApp('Stylish Clutch Wallet',599)">⚡ Buy Now</button>
+</div>
+
+<!-- PRODUCT 3 -->
+<div class="card">
+<img src="https://via.placeholder.com/300">
+<h3>Premium Hand Bag</h3>
+<p class="price">₹899</p>
+<p style="color:red; font-size:12px;">🔥 Only 3 left in stock</p>
+<p style="font-size:12px;">⭐ 4.9/5 (150 reviews)</p>
+<button onclick="addToCart('Premium Hand Bag',899)">Add to Cart</button>
+<button class="whatsapp" onclick="orderWhatsApp('Premium Hand Bag',899)">Order on WhatsApp</button>
+<button onclick="orderWhatsApp('Premium Hand Bag',899)">⚡ Buy Now</button>
+</div>
+
+<!-- PRODUCT 4 -->
+<div class="card">
+<img src="https://via.placeholder.com/300">
+<h3>Embroidered Stylish Bag</h3>
+<p class="price">₹999</p>
+<p style="color:red; font-size:12px;">🔥 Only 4 left in stock</p>
+<p style="font-size:12px;">⭐ 4.8/5 (110 reviews)</p>
+<button onclick="addToCart('Embroidered Stylish Bag',999)">Add to Cart</button>
+<button class="whatsapp" onclick="orderWhatsApp('Embroidered Stylish Bag',999)">Order on WhatsApp</button>
+<button onclick="orderWhatsApp('Embroidered Stylish Bag',999)">⚡ Buy Now</button>
+</div>
+
+</div>
+
+<!-- TRUST SECTION -->
+<div style="padding:10px; font-size:14px;">
+✔ 100% Quality Checked <br>
+✔ Cash on Delivery Available <br>
+✔ Easy Returns <br>
+✔ Fast Shipping 🚚
+</div>
+
+<div class="cart">
+
+<h2>Total: ₹<span id="total">0</span></h2>
+
+<ul id="cartItems"></ul>
+
+<form action="https://formspree.io/f/xgvyyqkz" method="POST">
+
+<input type="hidden" name="order_details" id="orderDetails">
+<input type="hidden" name="total" id="totalInput">
+
+<label>Your Name</label>
+<input type="text" name="name" required>
+
+<label>Phone Number</label>
+<input type="text" name="phone" required>
+
+<label>Address</label>
+<textarea name="address" required></textarea>
+
+<button class="order-btn" type="submit" onclick="prepareOrder()">📩 Send Order</button>
+
+</form>
+
 </div>
 
 <script>
-  const products = [
-    { id: 1, name: "Milk", price: 50, rating: 4.5, img: "https://via.placeholder.com/150" },
-    { id: 2, name: "Bread", price: 30, rating: 4.2, img: "https://via.placeholder.com/150" },
-    { id: 3, name: "Eggs", price: 70, rating: 4.8, img: "https://via.placeholder.com/150" },
-    { id: 4, name: "Apples", price: 120, rating: 4.3, img: "https://via.placeholder.com/150" }
-  ];
+let total = 0;
+let orders = [];
 
-  let cart = [];
+function addToCart(name, price){
+  total += price;
+  orders.push(name + " - ₹" + price);
 
-  function renderProducts(list) {
-    const container = document.getElementById("productList");
-    container.innerHTML = "";
-    list.forEach(p => {
-      container.innerHTML += `
-        <div class="card">
-          <img src="${p.img}" />
-          <h4>${p.name}</h4>
-          <p>₹${p.price}</p>
-          <p>⭐ ${p.rating}</p>
-          <button class="btn" onclick="addToCart(${p.id})">Add</button>
-        </div>`;
-    });
-  }
+  document.getElementById("total").innerText = total;
 
-  function addToCart(id) {
-    const product = products.find(p => p.id === id);
-    cart.push(product);
-    updateCart();
-  }
+  let li = document.createElement("li");
+  li.innerText = name + " - ₹" + price;
+  document.getElementById("cartItems").appendChild(li);
+}
 
-  function updateCart() {
-    document.getElementById("cartCount").innerText = cart.length;
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    document.getElementById("total").innerText = total;
-  }
+function prepareOrder(){
+  document.getElementById("totalInput").value = total;
+  document.getElementById("orderDetails").value =
+    "Items:\n" + orders.join("\n") + "\n\nTotal: ₹" + total;
+}
 
-  document.getElementById("search").addEventListener("input", (e) => {
-    const value = e.target.value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(value));
-    renderProducts(filtered);
-  });
+function orderWhatsApp(name, price){
+  let phone = "917838657382";
+  let msg = `Hello,
+I want to order:
 
-  renderProducts(products);
+Product: ${name}
+Price: ₹${price}
+
+Please confirm availability.`;
+
+  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg));
+}
 </script>
 
 </body>
