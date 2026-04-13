@@ -8,23 +8,9 @@ body {font-family:sans-serif; background:#f2f2f2; margin:0;}
 
 .header {
   padding:20px;
-  font-size:24px;
-  font-weight:bold;
   text-align:center;
   background:#111;
   color:white;
-}
-
-.header small {
-  font-size:14px;
-  color:#ccc;
-}
-
-.cod {
-  background:#ffe082;
-  padding:10px;
-  text-align:center;
-  font-weight:bold;
 }
 
 .grid {
@@ -39,7 +25,6 @@ body {font-family:sans-serif; background:#f2f2f2; margin:0;}
   border-radius:15px;
   padding:10px;
   text-align:center;
-  box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .card img {
@@ -49,15 +34,14 @@ body {font-family:sans-serif; background:#f2f2f2; margin:0;}
   border-radius:12px;
 }
 
-.price {color:#ff5722; font-weight:bold; font-size:18px;}
+.price {color:#ff5722; font-weight:bold;}
 
 button {
-  border:none;
-  padding:10px;
   width:100%;
-  border-radius:10px;
-  margin-top:6px;
-  font-size:14px;
+  padding:10px;
+  margin-top:5px;
+  border:none;
+  border-radius:8px;
   cursor:pointer;
 }
 
@@ -65,19 +49,20 @@ button {
 .whatsapp {background:#25D366; color:white;}
 .buy {background:#ff5722; color:white;}
 
-.badge {
-  color:red;
-  font-size:12px;
-}
-
 .cart {
   background:white;
   margin:10px;
   padding:15px;
-  border-radius:15px;
+  border-radius:12px;
 }
 
-ul {padding-left:18px;}
+input, textarea {
+  width:100%;
+  padding:10px;
+  margin:5px 0;
+  border:1px solid #ccc;
+  border-radius:5px;
+}
 
 .sticky-btn {
   position:fixed;
@@ -87,9 +72,8 @@ ul {padding-left:18px;}
   background:#25D366;
   color:white;
   padding:15px;
-  border-radius:12px;
   text-align:center;
-  font-size:16px;
+  border-radius:10px;
 }
 </style>
 
@@ -99,10 +83,8 @@ ul {padding-left:18px;}
 
 <div class="header">
 🛍️ Special Touch Store <br>
-<small>Premium Bags for Stylish Women</small>
+<small>Premium Bags</small>
 </div>
-
-<div class="cod">🚚 Cash on Delivery | Free Shipping | Limited Stock 🔥</div>
 
 <div class="grid">
 
@@ -110,52 +92,52 @@ ul {padding-left:18px;}
 <img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
 <h3>Designer Ladies Wallet</h3>
 <p class="price">₹499</p>
-<p class="badge">🔥 Only 5 left</p>
 <button class="cart-btn" onclick="addToCart('Designer Ladies Wallet',499)">Add to Cart</button>
-<button class="whatsapp" onclick="orderSingle('Designer Ladies Wallet',499)">WhatsApp</button>
-<button class="buy" onclick="orderSingle('Designer Ladies Wallet',499)">⚡ Buy Now</button>
 </div>
 
 <div class="card">
 <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519">
 <h3>Stylish Clutch Wallet</h3>
 <p class="price">₹599</p>
-<p class="badge">🔥 Only 7 left</p>
 <button class="cart-btn" onclick="addToCart('Stylish Clutch Wallet',599)">Add to Cart</button>
-<button class="whatsapp" onclick="orderSingle('Stylish Clutch Wallet',599)">WhatsApp</button>
-<button class="buy" onclick="orderSingle('Stylish Clutch Wallet',599)">⚡ Buy Now</button>
 </div>
 
 <div class="card">
 <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7">
 <h3>Premium Hand Bag</h3>
 <p class="price">₹899</p>
-<p class="badge">🔥 Only 3 left</p>
 <button class="cart-btn" onclick="addToCart('Premium Hand Bag',899)">Add to Cart</button>
-<button class="whatsapp" onclick="orderSingle('Premium Hand Bag',899)">WhatsApp</button>
-<button class="buy" onclick="orderSingle('Premium Hand Bag',899)">⚡ Buy Now</button>
 </div>
 
 <div class="card">
 <img src="https://images.unsplash.com/photo-1585487000160-6ebcfceb0d03">
 <h3>Embroidered Stylish Bag</h3>
 <p class="price">₹999</p>
-<p class="badge">🔥 Only 4 left</p>
 <button class="cart-btn" onclick="addToCart('Embroidered Stylish Bag',999)">Add to Cart</button>
-<button class="whatsapp" onclick="orderSingle('Embroidered Stylish Bag',999)">WhatsApp</button>
-<button class="buy" onclick="orderSingle('Embroidered Stylish Bag',999)">⚡ Buy Now</button>
 </div>
 
 </div>
 
 <div class="cart">
+
 <h2>Total: ₹<span id="total">0</span></h2>
 <ul id="cartItems"></ul>
+
+<h3>Enter Details</h3>
+
+<input type="text" id="name" placeholder="Your Name">
+<input type="text" id="phone" placeholder="Phone Number">
+<textarea id="address" placeholder="Address"></textarea>
+
+<button onclick="sendOrder()">📲 Order on WhatsApp</button>
+
+<br><br>
+
+<button onclick="payNow()">💳 Pay with UPI</button>
+
 </div>
 
-<div class="sticky-btn" onclick="sendFullOrder()">
-📲 Order Now on WhatsApp
-</div>
+<div class="sticky-btn" onclick="sendOrder()">Order Now</div>
 
 <script>
 let total = 0;
@@ -164,6 +146,7 @@ let orders = [];
 function addToCart(name, price){
   total += price;
   orders.push(name + " - ₹" + price);
+
   document.getElementById("total").innerText = total;
 
   let li = document.createElement("li");
@@ -171,24 +154,48 @@ function addToCart(name, price){
   document.getElementById("cartItems").appendChild(li);
 }
 
-function orderSingle(name, price){
-  let phone = "917838657382";
-  let msg = `Hello, I want to order:\n${name} - ₹${price}`;
-  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg));
-}
+function sendOrder(){
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
 
-function sendFullOrder(){
-  if(orders.length === 0){
-    alert("Cart is empty!");
+  if(!name || !phone || !address){
+    alert("Please fill all details");
     return;
   }
 
-  let phone = "917838657382";
-  let msg = "Hello, I want to order:\n\n" +
-            orders.join("\n") +
-            "\n\nTotal: ₹" + total;
+  let msg = `Order Details:
 
-  window.open("https://wa.me/" + phone + "?text=" + encodeURIComponent(msg));
+Name: ${name}
+Phone: ${phone}
+Address: ${address}
+
+Items:
+${orders.join("\n")}
+
+Total: ₹${total}`;
+
+  window.open("https://wa.me/917838657382?text=" + encodeURIComponent(msg));
+
+  // EMAIL SEND
+  fetch("https://formsubmit.co/mdshadav03@gmail.com", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name,
+      phone: phone,
+      address: address,
+      order: orders.join(", "),
+      total: total
+    })
+  });
+}
+
+function payNow(){
+  let upi = "upi://pay?pa=8745974437-3@ybl&pn=SpecialStore&am=" + total;
+  window.location.href = upi;
 }
 </script>
 
