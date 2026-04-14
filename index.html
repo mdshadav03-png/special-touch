@@ -6,25 +6,87 @@
 <title>Special Touch Store</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f5f5f5;}
-header{background:#000;color:#fff;text-align:center;padding:12px;}
-.top{background:#f8e7b5;text-align:center;padding:8px;font-size:14px;}
-
-.container{padding:10px;}
-.card{background:#fff;border-radius:10px;margin-bottom:15px;padding:10px;}
-.card img{width:100%;border-radius:10px;}
-
-.title{font-size:16px;font-weight:bold;margin:5px 0;}
-.price{color:#e91e63;font-size:18px;}
-.old{text-decoration:line-through;color:#888;font-size:13px;}
-
-.select{width:100%;padding:6px;margin:5px 0;}
-.btn{background:#ff5722;color:#fff;border:none;padding:8px;width:100%;border-radius:5px;}
-
-.cart{background:#fff;margin:10px;padding:10px;border-radius:10px;}
-input{width:100%;padding:8px;margin:5px 0;}
-.order{background:#ff5722;color:#fff;padding:10px;border:none;width:100%;border-radius:5px;}
-.whatsapp{background:#25D366;color:#fff;padding:10px;border:none;width:100%;border-radius:5px;margin-top:5px;}
+body{
+  font-family: Arial;
+  margin:0;
+  background:#f5f5f5;
+}
+header{
+  background:#000;
+  color:#fff;
+  padding:12px;
+  text-align:center;
+}
+.top{
+  background:#f8e7b5;
+  padding:8px;
+  text-align:center;
+  font-size:14px;
+}
+.container{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:10px;
+}
+.card{
+  background:#fff;
+  border-radius:10px;
+  padding:10px;
+}
+.card img{
+  width:100%;
+  border-radius:10px;
+}
+.title{
+  font-size:14px;
+  margin:5px 0;
+}
+.price{
+  color:#e91e63;
+  font-weight:bold;
+}
+.old{
+  text-decoration:line-through;
+  color:#999;
+  font-size:12px;
+}
+.btn{
+  background:#ff5722;
+  color:#fff;
+  border:none;
+  padding:6px;
+  width:100%;
+  border-radius:5px;
+}
+.cart{
+  background:#fff;
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+}
+input{
+  width:100%;
+  padding:8px;
+  margin:5px 0;
+}
+.order{
+  background:#ff5722;
+  color:#fff;
+  padding:10px;
+  border:none;
+  width:100%;
+  border-radius:5px;
+}
+.whatsapp{
+  background:#25D366;
+  color:#fff;
+  padding:10px;
+  border:none;
+  width:100%;
+  border-radius:5px;
+  margin-top:5px;
+}
 </style>
 
 </head>
@@ -36,97 +98,110 @@ input{width:100%;padding:8px;margin:5px 0;}
 ✔ Free Delivery | ✔ Cash on Delivery | ✔ 7 Days Return
 </div>
 
-<div class="container">
+<div class="container" id="products"></div>
 
-<!-- EMBROIDERED -->
-<div class="card">
-<img src="https://i.imgur.com/8Km9tLL.png">
-<div class="title">Premium Embroidered Handbag</div>
-<div class="price">₹799 <span class="old">₹1499</span></div>
-
-<select class="select" id="embroideredColor">
-<option>Black</option>
-<option>Yellow</option>
-<option>White</option>
-<option>Pink</option>
-<option>Brown</option>
-</select>
-
-<button class="btn" onclick="add('Embroidered Handbag')">Add to Cart</button>
-</div>
-
-<!-- PLAIN -->
-<div class="card">
-<img src="https://i.imgur.com/jhV6K9W.png">
-<div class="title">Classic Plain Handbag</div>
-<div class="price">₹799 <span class="old">₹1499</span></div>
-
-<select class="select" id="plainColor">
-<option>Brown</option>
-<option>Light Brown</option>
-<option>Green</option>
-<option>Pink</option>
-</select>
-
-<button class="btn" onclick="add('Plain Handbag')">Add to Cart</button>
-</div>
-
-<!-- PARTY -->
-<div class="card">
-<img src="https://i.imgur.com/1Q9Z1Zm.png">
-<div class="title">Designer Party Handbag</div>
-<div class="price">₹799 <span class="old">₹1599</span></div>
-
-<select class="select" id="partyColor">
-<option>Golden</option>
-<option>Pink</option>
-</select>
-
-<button class="btn" onclick="add('Party Handbag')">Add to Cart</button>
-</div>
-
-</div>
-
-<!-- CART -->
 <div class="cart">
 <h3>Total: ₹<span id="total">0</span></h3>
 
-<input type="text" id="name" placeholder="Enter Full Name">
-<input type="text" id="phone" placeholder="10 Digit Mobile Number">
-<input type="text" id="address" placeholder="Full Address with Pincode">
+<form action="https://formsubmit.co/mdshadav03@gmail.com" method="POST" onsubmit="return submitOrder()">
+  
+  <input type="hidden" name="Products" id="productName">
 
-<button class="order">Place Order (COD)</button>
-<button class="whatsapp" onclick="sendWhatsApp()">Order on WhatsApp</button>
+  <input type="text" id="name" name="Name" placeholder="Enter Full Name" required>
+  <input type="text" id="phone" name="Phone" placeholder="10 Digit Mobile Number" required>
+  <input type="text" id="address" name="Address" placeholder="Full Address with Pincode" required>
+
+  <button class="order" type="submit">Place Order (COD)</button>
+</form>
+
+<button class="whatsapp" onclick="whatsappOrder()">Order on WhatsApp</button>
+
 </div>
 
 <script>
-let cart=[];
-let total=0;
 
-function add(product){
-  cart.push(product);
-  total+=799;
-  document.getElementById("total").innerText=total;
-}
+let cart = [];
+let total = 0;
 
-function sendWhatsApp(){
-let name=document.getElementById("name").value;
-let phone=document.getElementById("phone").value;
-let address=document.getElementById("address").value;
+let products = [
+  {name:"Handbag 1", price:799, old:1499, img:"https://i.ibb.co/3YzpFL6X/Whats-App-Image-2026-04-12-at-8-45-08-PM-1-1.jpg"},
+  {name:"Handbag 2", price:799, old:1499, img:"https://i.ibb.co/8LHW94Bn/Whats-App-Image-2026-04-12-at-8-45-08-PM-2-25.jpg"},
+  {name:"Handbag 3", price:799, old:1499, img:"https://i.ibb.co/hJT7Wd2L/Whats-App-Image-2026-04-12-at-8-45-09-PM-18.jpg"},
+  {name:"Handbag 4", price:799, old:1499, img:"https://i.ibb.co/67DtDQyk/Whats-App-Image-2026-04-12-at-8-45-07-PM-25.jpg"},
+  {name:"Handbag 5", price:799, old:1499, img:"https://i.ibb.co/jkGX6mx8/Whats-App-Image-2026-04-12-at-8-45-07-PM.jpg"},
+  {name:"Premium Bag 1", price:799, old:1499, img:"https://i.ibb.co/zhXwFFKc/Whats-App-Image-2026-04-12-at-6-37-10-AM.jpg"},
+  {name:"Premium Bag 2", price:799, old:1499, img:"https://i.ibb.co/R4SxLD8G/Whats-App-Image-2026-04-12-at-6-37-10-AM-1.jpg"},
+  {name:"Premium Bag 3", price:799, old:1499, img:"https://i.ibb.co/6RdN3ZLG/Whats-App-Image-2026-04-12-at-6-37-11-AM.jpg"},
+  {name:"Premium Bag 4", price:799, old:1499, img:"https://i.ibb.co/bj24K7s6/Whats-App-Image-2026-04-12-at-6-40-13-AM.jpg"},
+  {name:"Premium Bag 5", price:799, old:1499, img:"https://i.ibb.co/BKGb0Wp8/Whats-App-Image-2026-04-12-at-6-40-48-AM.jpg"}
+];
 
-let msg="Order Details:%0A";
+let container = document.getElementById("products");
 
-cart.forEach(p=>{
-msg+=p+" - ₹799%0A";
+products.forEach((p,i)=>{
+  container.innerHTML += `
+  <div class="card">
+    <img src="${p.img}">
+    <div class="title">${p.name}</div>
+    <div class="price">₹${p.price} <span class="old">₹${p.old}</span></div>
+    <button class="btn" onclick="addToCart(${i})">Add to Cart</button>
+  </div>
+  `;
 });
 
-msg+="Total: ₹"+total+"%0A";
-msg+="Name: "+name+"%0A";
-msg+="Phone: "+phone+"%0A";
-msg+="Address: "+address;
-
-window.open("https://wa.me/917838657382?text="+msg);
+function addToCart(i){
+  cart.push(products[i]);
+  total += products[i].price;
+  document.getElementById("total").innerText = total;
 }
+
+function submitOrder(){
+
+  if(cart.length === 0){
+    alert("Please add products first!");
+    return false;
+  }
+
+  let productText = "";
+
+  cart.forEach(p=>{
+    productText += p.name + " - ₹" + p.price + ", ";
+  });
+
+  productText += " Total: ₹" + total;
+
+  document.getElementById("productName").value = productText;
+
+  alert("Order Placed Successfully!");
+
+  return true;
+}
+
+function whatsappOrder(){
+
+  if(cart.length === 0){
+    alert("Please add products first!");
+    return;
+  }
+
+  let name = document.getElementById("name").value;
+  let phone = document.getElementById("phone").value;
+  let address = document.getElementById("address").value;
+
+  let message = "Order Details:%0A";
+
+  cart.forEach(p=>{
+    message += p.name + " - ₹" + p.price + "%0A";
+  });
+
+  message += "Total: ₹" + total + "%0A";
+  message += "Name: " + name + "%0A";
+  message += "Phone: " + phone + "%0A";
+  message += "Address: " + address;
+
+  window.open("https://wa.me/917838657382?text=" + message);
+}
+
 </script>
 
 </body>
