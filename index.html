@@ -1,225 +1,190 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Special Touch Store</title>
 
 <style>
-body {font-family:sans-serif; background:#f2f2f2; margin:0;}
-
-.header {
-  padding:20px;
-  text-align:center;
-  background:#111;
-  color:white;
+body{
+  font-family: Arial;
+  margin:0;
+  background:#f5f5f5;
 }
-
-.top {
-  background:#fff3cd;
-  padding:10px;
-  text-align:center;
-  font-weight:bold;
-}
-
-.grid {
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+header{
+  background:#000;
+  color:#fff;
   padding:12px;
-}
-
-.card {
-  background:white;
-  border-radius:15px;
-  padding:10px;
   text-align:center;
 }
-
-.card img {
-  width:100%;
-  height:180px;
-  object-fit:cover;
-  border-radius:12px;
+.top{
+  background:#f8e7b5;
+  padding:8px;
+  text-align:center;
+  font-size:14px;
 }
-
-.price {color:#ff5722; font-weight:bold;}
-
-.qty {
-  display:flex;
-  justify-content:center;
-  align-items:center;
+.container{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
   gap:10px;
-  margin-top:5px;
-}
-
-.qty button {
-  width:30px;
-  height:30px;
-  font-size:18px;
-  background:black;
-  color:white;
-  border-radius:50%;
-}
-
-.cart {
-  background:white;
-  margin:10px;
-  padding:15px;
-  border-radius:12px;
-}
-
-input, textarea {
-  width:100%;
   padding:10px;
+}
+.card{
+  background:#fff;
+  border-radius:10px;
+  padding:10px;
+}
+.card img{
+  width:100%;
+  border-radius:10px;
+}
+.title{
+  font-size:14px;
   margin:5px 0;
 }
-
-button {
-  width:100%;
-  padding:10px;
-  margin-top:5px;
-  border:none;
-  border-radius:8px;
-  background:#ff5722;
-  color:white;
+.price{
+  color:#e91e63;
+  font-weight:bold;
 }
-
-.whatsapp {background:#25D366;}
+.old{
+  text-decoration:line-through;
+  color:#999;
+  font-size:12px;
+}
+.btn{
+  background:#ff5722;
+  color:#fff;
+  border:none;
+  padding:6px;
+  width:100%;
+  border-radius:5px;
+}
+.cart{
+  background:#fff;
+  margin:10px;
+  padding:10px;
+  border-radius:10px;
+}
+input{
+  width:100%;
+  padding:8px;
+  margin:5px 0;
+}
+.order{
+  background:#ff5722;
+  color:#fff;
+  padding:10px;
+  border:none;
+  width:100%;
+  border-radius:5px;
+}
+.whatsapp{
+  background:#25D366;
+  color:#fff;
+  padding:10px;
+  border:none;
+  width:100%;
+  border-radius:5px;
+  margin-top:5px;
+}
 </style>
 
 </head>
-
 <body>
 
-<div class="header">
-🛍️ Special Touch Store
-</div>
+<header>🛍️ Special Touch Store</header>
 
 <div class="top">
-✔️ Free Delivery | ✔️ Cash on Delivery | ✔️ 7 Days Return
+✔ Free Delivery | ✔ Cash on Delivery | ✔ 7 Days Return
 </div>
 
-<div class="grid">
-
-<!-- PRODUCT -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1584917865442-de89df76afd3">
-<h3>Wallet ₹499</h3>
-
-<div class="qty">
-<button onclick="changeQty('Wallet',499,-1)">-</button>
-<span id="Wallet">0</span>
-<button onclick="changeQty('Wallet',499,1)">+</button>
-</div>
-
-</div>
-
-<div class="card">
-<img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519">
-<h3>Clutch ₹599</h3>
-
-<div class="qty">
-<button onclick="changeQty('Clutch',599,-1)">-</button>
-<span id="Clutch">0</span>
-<button onclick="changeQty('Clutch',599,1)">+</button>
-</div>
-
-</div>
-
-</div>
+<div class="container" id="products"></div>
 
 <div class="cart">
+<h3>Total: ₹<span id="total">0</span></h3>
 
-<h2>Total: ₹<span id="total">0</span></h2>
+<input type="text" id="name" placeholder="Enter Full Name">
+<input type="text" id="phone" placeholder="10 Digit Mobile Number">
+<input type="text" id="address" placeholder="Full Address with Pincode">
 
-<input id="name" placeholder="Name">
-<input id="phone" placeholder="Phone">
-<textarea id="address" placeholder="Address"></textarea>
-
-<button onclick="placeOrder()">🛒 Order Now</button>
-<button class="whatsapp" onclick="orderWhatsApp()">📲 Order on WhatsApp</button>
-
+<button class="order" onclick="orderNow()">Place Order (COD)</button>
+<button class="whatsapp" onclick="whatsappOrder()">Order on WhatsApp</button>
 </div>
 
 <script>
-let cart = {};
+
+let cart = [];
 let total = 0;
 
-function changeQty(name, price, change){
-  if(!cart[name]) cart[name]=0;
+// 👉 20+ Products List
+let products = [
+  {name:"Ladies Handbag", price:499, old:999, img:"https://via.placeholder.com/300"},
+  {name:"Stylish Purse", price:399, old:799, img:"https://via.placeholder.com/300"},
+  {name:"Designer Clutch", price:599, old:1199, img:"https://via.placeholder.com/300"},
+  {name:"Shoulder Bag", price:699, old:1399, img:"https://via.placeholder.com/300"},
+  {name:"Wallet Premium", price:299, old:599, img:"https://via.placeholder.com/300"},
+  {name:"Fashion Bag", price:549, old:1099, img:"https://via.placeholder.com/300"},
+  {name:"Party Clutch", price:499, old:999, img:"https://via.placeholder.com/300"},
+  {name:"Travel Bag", price:799, old:1599, img:"https://via.placeholder.com/300"},
+  {name:"Office Bag", price:699, old:1299, img:"https://via.placeholder.com/300"},
+  {name:"Mini Purse", price:249, old:499, img:"https://via.placeholder.com/300"},
+  {name:"Luxury Handbag", price:999, old:1999, img:"https://via.placeholder.com/300"},
+  {name:"College Bag", price:599, old:1199, img:"https://via.placeholder.com/300"},
+  {name:"Stylish Sling Bag", price:399, old:799, img:"https://via.placeholder.com/300"},
+  {name:"Classic Wallet", price:199, old:399, img:"https://via.placeholder.com/300"},
+  {name:"Party Bag", price:649, old:1299, img:"https://via.placeholder.com/300"},
+  {name:"Leather Purse", price:549, old:1099, img:"https://via.placeholder.com/300"},
+  {name:"Compact Clutch", price:449, old:899, img:"https://via.placeholder.com/300"},
+  {name:"Daily Use Bag", price:499, old:999, img:"https://via.placeholder.com/300"},
+  {name:"Premium Sling", price:699, old:1399, img:"https://via.placeholder.com/300"},
+  {name:"Trendy Handbag", price:599, old:1199, img:"https://via.placeholder.com/300"}
+];
 
-  cart[name] += change;
-  if(cart[name] < 0) cart[name]=0;
+// Show products
+let container = document.getElementById("products");
 
-  document.getElementById(name).innerText = cart[name];
-  calculateTotal();
-}
+products.forEach((p,i)=>{
+  container.innerHTML += `
+  <div class="card">
+    <img src="${p.img}">
+    <div class="title">${p.name}</div>
+    <div class="price">₹${p.price} <span class="old">₹${p.old}</span></div>
+    <button class="btn" onclick="addToCart(${i})">Add to Cart</button>
+  </div>
+  `;
+});
 
-function calculateTotal(){
-  total = 0;
-  for(let item in cart){
-    if(item=="Wallet") total += cart[item]*499;
-    if(item=="Clutch") total += cart[item]*599;
-  }
+function addToCart(i){
+  cart.push(products[i]);
+  total += products[i].price;
   document.getElementById("total").innerText = total;
 }
 
-function placeOrder(){
+// Normal order
+function orderNow(){
+  alert("Order Placed Successfully!");
+}
+
+// WhatsApp order
+function whatsappOrder(){
   let name = document.getElementById("name").value;
   let phone = document.getElementById("phone").value;
   let address = document.getElementById("address").value;
 
-  if(!name || !phone || !address){
-    alert("Fill all details");
-    return;
-  }
+  let message = "Order Details:%0A";
+  
+  cart.forEach(p=>{
+    message += p.name + " - ₹" + p.price + "%0A";
+  });
 
-  let items = "";
-  for(let item in cart){
-    if(cart[item] > 0){
-      items += item + " x" + cart[item] + "\n";
-    }
-  }
+  message += "Total: ₹" + total + "%0A";
+  message += "Name: " + name + "%0A";
+  message += "Phone: " + phone + "%0A";
+  message += "Address: " + address;
 
-  let msg = `Order Details:
-
-Name: ${name}
-Phone: ${phone}
-Address: ${address}
-
-Items:
-${items}
-
-Total: ₹${total}`;
-
-  // WHATSAPP
-  window.open("https://wa.me/917838657382?text="+encodeURIComponent(msg));
-
-  // EMAIL FIX (IMPORTANT)
-  let form = document.createElement("form");
-  form.action = "https://formsubmit.co/mdshadav03@gmail.com";
-  form.method = "POST";
-
-  let input = document.createElement("input");
-  input.type = "hidden";
-  input.name = "message";
-  input.value = msg;
-
-  form.appendChild(input);
-  document.body.appendChild(form);
-  form.submit();
-
-  alert("Order Sent Successfully!");
+  window.open("https://wa.me/917838657382?text=" + message);
 }
 
-function orderWhatsApp(){
-  let msg = "Order:\n";
-  for(let item in cart){
-    if(cart[item]>0){
-      msg += item + " x" + cart[item] + "\n";
-    }
-  }
-  window.open("https://wa.me/917838657382?text="+encodeURIComponent(msg));
-}
 </script>
 
 </body>
