@@ -1,25 +1,123 @@
-// ... imports ...
-export function CheckoutPage() {
-  // ... state ...
-  const sendWhatsAppMessage = () => {
-    const message = `*New Order Placed!* \n\n` +
-      `*Name:* ${formData.fullName}\n` +
-      `*Phone:* ${formData.phone}\n` +
-      `*Address:* ${formData.address}, ${formData.city} - ${formData.pincode}\n\n` +
-      `*Items:*\n${cart.map(item => `- ${item.name} ${item.sku ? `[SKU: ${item.sku}]` : ''} x ${item.quantity} (₹${item.price * item.quantity})`).join('\n')}\n\n` +
-      `*Payment Method:* ${paymentMethod === 'ONLINE' ? 'Online / Paid' : 'Cash on Delivery'}\n` +
-      `*Total Amount:* ₹${finalTotal.toFixed(2)}`;
-    
-    window.open(`https://wa.me/917838657382?text=${encodeURIComponent(message)}`, '_blank');
-  };
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { ShippingDetails } from '../types';
+import { Star } from 'lucide-react';
 
-  const handlePlaceOrder = async (e: React.FormEvent) => {
-    // ... logic ...
-    if (saveAddressEnabled) {
-      addAddress(formData); // This saves the address to profile
-    }
-    sendWhatsAppMessage();
-    // ...
-  };
-  // ... UI Code ...
+// ================== TYPES ==================
+interface UserProfile {
+  name: string;
+  email: string;
+  phone: string;
+  avatar?: string;
+  joinDate: string;
+  savedAddresses?: ShippingDetails[];
 }
+
+interface AuthState {
+  user: UserProfile | null;
+  updateProfile: (profile: Partial<UserProfile>) => void;
+  addAddress: (address: ShippingDetails) => void;
+  removeAddress: (index: number) => void;
+  logout: () => void;
+}
+
+// ================== ZUSTAND STORE ==================
+export const useAuthStore = create<AuthState>()(
+  persist(
+    (set) => ({
+      user: {
+        name: 'Guest User',
+        email: 'user@example.com',
+        phone: '+91 9999999999',
+        joinDate: new Date().toISOString(),
+        savedAddresses: [],
+      },
+
+      updateProfile: (profile) =>
+        set((state) => ({
+          user: state.user ? { ...state.user, ...profile } : null,
+        })),
+
+      addAddress: (address) =>
+        set((state) => ({
+          user: state.user
+            ? {
+                ...state.user,
+                savedAddresses: [
+                  ...(state.user.savedAddresses || []),
+                  address,
+                ],
+              }
+            : null,
+        })),
+
+      removeAddress: (index) =>
+        set((state) => ({
+          user: state.user
+            ? {
+                ...state.user,
+                savedAddresses: (state.user.savedAddresses || []).filter(
+                  (_, i) => i !== index
+                ),
+              }
+            : null,
+        })),
+
+      logout: () => set({ user: null }),
+    }),
+    { name: 'auth-storage' }
+  )
+);
+
+// ================== WHATSAPP FUNCTION ==================
+export const sendWhatsAppOrder = ({
+  orderId,
+  formData,
+  cart,
+  paymentMethod,
+  finalTotal,
+}: any) => {
+  const whatsappMessage = `*New Order Arrived!*
+
+*Order ID:* ${orderId}
+
+*Customer Details:*
+*Name:* ${formData.fullName}
+*Phone:* ${formData.phone}
+*Address:* ${formData.address}, ${formData.city} - ${formData.pincode}
+
+*Items:*
+${cart
+  .map(
+    (item: any) =>
+      `- ${item.name} ${
+        item.sku ? `[SKU: ${item.sku}]` : ''
+      } x ${item.quantity} (₹${item.price * item.quantity})`
+  )
+  .join('\n')}
+
+*Payment Method:* ${
+    paymentMethod === 'ONLINE' ? 'Online / Paid' : 'Cash on Delivery'
+  }
+*Total Amount:* ₹${finalTotal.toFixed(2)}`;
+
+  const whatsappUrl = `https://wa.me/917838657382?text=${encodeURIComponent(
+    whatsappMessage
+  )}`;
+
+  window.open(whatsappUrl, '_blank');
+};
+
+// ================== RATING COMPONENT ==================
+export const Rating = ({ rating, count }: any) => {
+  return (
+    <div className="flex items-center space-x-2 mb-2">
+      <div className="bg-brand-teal text-white flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold">
+        {rating} <Star size={8} className="ml-0.5 fill-white" />
+      </div>
+      <span className="text-gray-400 text-[10px] font-medium">
+        ({count})
+      </span>
+    </div>
+  );
+};
